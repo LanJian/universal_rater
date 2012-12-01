@@ -1,23 +1,26 @@
-var app, assets, express, port, stylus;
+var express = require('express');
+var stylus = require('stylus');
+var assets = require('connect-assets');
+var redis = require('redis');
 
-express = require('express');
-
-stylus = require('stylus');
-
-assets = require('connect-assets');
-
-app = express();
-
+var app = express();
 app.use(assets());
-
 app.use(express.static(process.cwd() + '/public'));
-
 app.set('view engine', 'jade');
 
-console.log('sup');
+var db = redis.createClient();
 
 app.get('/', function(req, resp) {
+  db.set('mykey', 'myvalue', function(err, val) {
+  });
   return resp.render('index');
+});
+
+app.get('/getval', function(req, resp) {
+  db.get('mykey', function(err, val) {
+    console.log('getval: ' + val);
+    return resp.send(val);
+  });
 });
 
 port = process.env.PORT || process.env.VMC_APP_PORT || 3000;

@@ -18,7 +18,7 @@ log = (message, color, explanation) ->
   console.log color + message + reset + ' ' + (explanation or '')
 
 ## Compiles app.coffee and src directory to the app directory
-#build = (callback) ->
+build = (callback) ->
   #options = ['-c','-b', '-o', 'app', 'src']
   #cmd = which.sync 'coffee'
   #coffee = spawn cmd, options
