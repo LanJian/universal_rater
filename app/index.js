@@ -14,6 +14,8 @@ app.use(express.static(process.cwd() + '/public'));
 
 app.set('view engine', 'jade');
 
+console.log('sup');
+
 app.get('/', function(req, resp) {
   return resp.render('index');
 });
