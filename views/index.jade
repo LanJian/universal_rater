@@ -1,6 +1,7 @@
 extends layout
 block content
 
+    != css('bootstrap-progressbar.min')
     != css('main')
     != css('card')
 
@@ -44,6 +45,7 @@ block content
             div(id='col2', class='span4')
             div(id='col3', class='span4')
 
+    !=js('bootstrap-progressbar.min')
     script(src="/script/template.js")
     script(src="/script/model.js")
     script(src="/script/main.js")
