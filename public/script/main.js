@@ -89,7 +89,6 @@ function finAttrBtn(that) {
 
     //$button.off('click');
     $button.click(startAttrBtn);
-    
 }
 
 function animateAttrRating() {
@@ -113,7 +112,33 @@ function addEntityBtn() {
 }
 
 function getComment(that) {
-    console.log('hello world');            
+    var entityName = $('#col1').find('.card').find('.card-title').html();
+    var attrName = $(that.target).find('.attrTitle').html();
+    console.log(entityName);
+    console.log(attrName);
+    var url = "/entity/"+entityName+"/attr/"+attrName+"/comments";
+
+    $.get(url, function(data) {
+        var col3 = $('#col3');
+        var cardContent = '';
+
+        for (var i = 0; i < data.length; i++) {
+            var commentM = new App.Comment({
+                "comment": data[i]['comment']
+            });
+            var commentV = new App.CommentView(commentM);
+            cardContent += commentV.render().$el.html();
+        }
+
+        if (!data.length) {
+            cardContent += new App.CommentView(new App.Comment()).render().$el.html();
+        }
+        
+        col3.add({'cardTitle':attrName+" Comments", 
+                  'cardContent': cardContent,
+                  'iconType': 'plus'
+        });
+    });
 }
 
 $(function() {

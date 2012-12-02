@@ -49,11 +49,11 @@ App.Attr = Backbone.Model.extend({
 	}
 });
 
-/*
 App.Comment= Backbone.Model.extend({
 	urlRoot:"", //restful api
 	defaults: {
-        comment: "Add Your Comment Now!" 
+        comment: "Add Your Comment Now!",
+        author: "Mystery"
 	},
 	initialize: function(spec) {
 		this.on("change:highlight", "toggleHighlight", this);
@@ -65,7 +65,6 @@ App.Comment= Backbone.Model.extend({
 	validate: function(attribs) {
 	}
 });
-*/
 
 var attrCollection = Backbone.Collection.extend({
     model: App.Attr
@@ -106,7 +105,6 @@ App.AttrView = Backbone.View.extend({
 	}
 });
 
-/*
 //Comment View
 App.CommentView= Backbone.View.extend({
 	tagName: 'div',
@@ -127,7 +125,7 @@ App.CommentView= Backbone.View.extend({
 	initialize: function(card) {
 		console.log("App.CommentView initialize");
 	}
-}); */
+});
 
 //Card view
 App.CardView = Backbone.View.extend({
