@@ -27,7 +27,7 @@ var Template = (function() {
             '</h5>' +
         '</div>' +
         '<div class="">' +
-            '<input type="text" class="ratingBox">' +
+            '<input type="range" class="ratingSlider" min="0" max="10">' +
         '</div>' + 
         '<br><br>' + 
         '<div class="progress active" style="max-width:<%=attrValue[1]%>"%>' +

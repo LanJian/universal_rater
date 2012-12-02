@@ -69,9 +69,10 @@
     text-align: left;
   }
 
-  .ratingBox {
-    max-width: 1.2em;
+  .ratingSlider {
+    max-width: 10em;
     float: right;
+    margin-top: 0.8em
   }
 
   .contentContainer {
