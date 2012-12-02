@@ -61,8 +61,14 @@
   }
 
   .attrStyle {
-    padding: 1em;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
   }
+
+  .attrTitle {
+    text-align: left;
+  }
+
   .contentContainer {
     min-height: 10em;
     margin-bottom: 3em;

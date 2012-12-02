@@ -41,6 +41,14 @@ function startEditBtn(that) {
     $('.editUIBtn').click(finEditBtn);
 }
 
+function animateAttrRating() {
+    $('.progress').progressbar({
+        transition_delay: 300,
+        refresh_speed: 50,
+        display_text: 2
+    });
+}
+
 function startAttrBtn(that) {
     //add new a new attr
     var $parent = $(that.target).parents('.card');
@@ -49,6 +57,7 @@ function startAttrBtn(that) {
     var aModel = new App.Attr({
         'attrTitle': 'Enter New Attribute Name',
         'attrValue': [0, 50],
+        'editable': true
     });
 
     var aView = new App.AttrView(aModel);
