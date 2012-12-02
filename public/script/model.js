@@ -191,7 +191,7 @@ var BaseColView = Backbone.View.extend({
 		}
 	},
 	addOne: function(card) {
-		var card = new App.CardView({model: card});
+		var card = new App.CardView(card);
 		this.$el.append(card.render().el);
 	},
 	addAll: function() {
