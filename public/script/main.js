@@ -16,21 +16,6 @@ function keyShortcut() {
     });
 }
 
-function finEditBtn(that) {
-    var $parent = $(that.target).parents('.editUI');
-
-    var imgSrc = $parent.find('input').val(); 
-    var $contContainer = $parent.find('.contentContainer');
-
-    var mCid = $parent.parents('.card').attr('cid');
-    var model = App.Column1.getByCid(mCid);
-
-    model.imgSrc = imgSrc;
-} 
-
-function finAttrBtn(that) {
-}
-
 function startEditBtn(that) {
     //enable contenteditable and allow user to add image
     var $parent = $(that.target).parents('.card');
@@ -41,13 +26,19 @@ function startEditBtn(that) {
     $('.editUIBtn').click(finEditBtn);
 }
 
-function animateAttrRating() {
-    $('.progress').progressbar({
-        transition_delay: 300,
-        refresh_speed: 50,
-        display_text: 2
-    });
-}
+function finEditBtn(that) {
+    var $parent = $(that.target).parents('.editUI');
+
+    var imgSrc = $parent.find('input').val(); 
+    var $contContainer = $parent.find('.contentContainer');
+
+    var mCid = $parent.parents('.card').attr('cid');
+    var model = App.Column1.getByCid(mCid);
+
+    model.imgSrc = imgSrc;
+
+    $parent.remove();
+} 
 
 function startAttrBtn(that) {
     //add new a new attr
@@ -62,6 +53,18 @@ function startAttrBtn(that) {
 
     var aView = new App.AttrView(aModel);
     $contContainer.prepend(aView.render().$el);
+}
+
+function finAttrBtn(that) {
+}
+
+function animateAttrRating() {
+    $('.progress .bar').progressbar({
+        transition_delay: 300,
+        refresh_speed: 50,
+        display_text: 2,
+        use_percentage: true
+    });
 }
 
 function addEntityBtn() {

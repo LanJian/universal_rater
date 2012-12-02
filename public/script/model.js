@@ -138,7 +138,6 @@ App.CardView = Backbone.View.extend({
 	},
 	render: function(event) {
 		console.log("App.CardView Render");
-		//this.model.get('iconType'));
         
 		this.$el.html(this.template(this.model.toJSON()));
         this.$el.attr('cid', this.model.cid);
@@ -150,14 +149,11 @@ App.CardView = Backbone.View.extend({
         else {
             this.$el.addClass('attrStyle');
             this.$el.find('.btnplus').click(startAttrBtn);
+            this.$el.find('.card-content').removeClass('inner');
+            animateAttrRating();
         }
 
-		/*
-		if (this.model.get('cardType') == "videoCard") {
-			this.$el.find('.card-header').hide();
-		}
-		*/
-		return this;
+        return this;
 	},
 	initialize: function(card) {
         this.model = card;
@@ -182,13 +178,6 @@ var BaseColView = Backbone.View.extend({
 	},
 	render: function() {
 		console.log("App.Col render");
-
-		if (collection.length) {
-			console.log(collection.length);
-		}
-		else {
-			//this.$el.hide(); //hide the view
-		}
 	},
 	addOne: function(card) {
 		var card = new App.CardView(card);
@@ -213,7 +202,7 @@ App.Col2View = BaseColView.extend({
 App.Col3View = BaseColView.extend({
 	el: '#col3',
 	collection: App.Column3
-});
+    });
 
 //Utility Functions
 App.CurrentColIndex = 0; //index to current col
