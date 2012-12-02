@@ -74,7 +74,7 @@ module.exports = (function (app) {
     if (entity.attrs[name])
       return res.send('failed: already exists');
 
-    entity.attrs[name] = [0, 0];
+    entity.attrs[name] = [0, 5];
 
     var key = 'entity:' + req.params.entityName;
     db.set(key, JSON.stringify(entity), function(err, val) {
@@ -99,6 +99,32 @@ module.exports = (function (app) {
     entity.attrs[attrName] = newData;
 
     var key = 'entity:' + req.params.entityName;
+    db.set(key, JSON.stringify(entity), function(err, val) {
+      if (err) return res.send('failed: ' + err);
+      return res.send('success: ' + val);
+    });
+  });
+
+
+  app.put('/entity/:entityName/attr/:attrName/rating', getEntity, getAttr, function(req, res) {
+    var entityName = req.params.entityName;
+    var attrName = req.params.attrName;
+    var rating = parseFloat(req.query.rating);
+
+    var entity = req.entity;
+    var attr = req.attr;
+    console.log(attr);
+
+    var votes = attr[0];
+    var avgRating = attr[1];
+
+    var newVotes = votes + 1;
+    var newRating = (avgRating*votes + rating) / newVotes;
+    var newAttr = [newVotes, newRating];
+
+    entity.attrs[attrName] = newAttr;
+    console.log(entity);
+    var key = 'entity:' + entityName;
     db.set(key, JSON.stringify(entity), function(err, val) {
       if (err) return res.send('failed: ' + err);
       return res.send('success: ' + val);
