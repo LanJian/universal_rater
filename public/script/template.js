@@ -1,18 +1,12 @@
 //'<!--Start of Build In Javascript Template-->'
 var Template = (function() {
   var cardTemplate = 
-      '<div id="<%=cardId%>" class="card-header">' +
+    '<div id="<%=cardId%>" class="card-header">' +
         '<legend contenteditable="<%=editable%>" class="card-title">' +
         	'<%=cardTitle%>' +
         '</legend>' +
-        '<div class="pull-right" style="margin-top:-3.7em; padding-right: 0.5em;">' +
-          '<ul class="nav rating">' +
-            '<li style="opacity:0.5;"><i class="icon-heart"></i></li>' + 
-            '<li style="opacity:0.5;"><i class="icon-heart"></i></li>' +
-            '<li style="opacity:0.5;"><i class="icon-heart"></i></li>' +
-            '<li style="opacity:0.5;"><i class="icon-heart"></i></li>' +
-            '<li style="opacity:0.5;"><i class="icon-heart"></i></li>' +
-          '</ul>' +
+        '<div class="pull-right" style="margin-top:-4em; padding-right: 0.5em;">' +
+            '<button class="btn"><i class="icon-<%=iconType%>"></i></button>' +
         '</div>' +
       '</div>' +
       '<div class="contentContainer outer">' +
@@ -20,17 +14,33 @@ var Template = (function() {
           '<%=cardContent%>' +
         '</div>' + 
       '</div>' +
-     	'<div class="actions outer">' +
-     	  '<div class="inner">' +
-     	    '<button data-src="<%=cardSrc%>" class="btn"><i class="icon-share"></i> Share</button>' +
-          '&nbsp;' +
-     	    '<button data-src="<%=cardSrc%>" class="btn"><i class="icon-globe"></i> Visit</button>' +
-     	  '</div>' +
+      '<div class="actions outer">' +
+        '<div class="inner">' +
+     	'</div>' +
       '</div>';
+
+  var attributeTemplate = 
+      '<div id="<%=attrId%>" class="attrDiv">' +
+        '<h5>' + 
+        	'<%=attrTitle%>' +
+        '</h5>' +
+        '<div class="progress active" style="max-width:90%;">' +
+            '<% _.each(attrList, function(attr) { %>' +
+                '<div class="bar bar-success" style="width: <%=attr[1]%> "> <%=attr[1]%> </div>' +  
+            '<% }); %>' + 
+        '</div>' +
+      '</div>';
+
+  var commentTemplate = 
+      '<div class="commentDiv">' +
+        '<p class="commentStyle">' + 
+            '<%=comment%>' + 
+        '</p>' + 
+      '</div>';
+
   return {
-    cardTemplate: cardTemplate
+    cardTemplate: cardTemplate,
+    attributeTemplate: attributeTemplate,
+    commentTemplate: commentTemplate
   };
-}) ();
-    
-      
-    
+})();

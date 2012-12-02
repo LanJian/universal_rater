@@ -12,12 +12,10 @@ App.storyId = undefined;
 App.Card = Backbone.Model.extend({
 	urlRoot:"", //restful api
 	defaults: {
-		cardType: "card",
 		cardTitle: " ",
 		cardContent: "",
 		cardId: guidGenerator(),
-		cardSrc: "",
-		cardRating: -1,
+        iconType: "edit",
 		editable: false
 	},
 	initialize: function(spec) {
@@ -31,16 +29,106 @@ App.Card = Backbone.Model.extend({
 	}
 });
 
+App.Attr = Backbone.Model.extend({
+	urlRoot:"", //restful api
+	defaults: {
+		attrId: guidGenerator(),
+		attrTitle: "",
+        attrList: [0, 0],
+		editable: false
+	},
+	initialize: function(spec) {
+		this.on("change:highlight", "toggleHighlight", this);
+		this.on("change:content", "updateContent", this);
+		this.on("error", function(model, error) {
+			console.log(error);
+		});
+	},
+	validate: function(attribs) {
+	}
+});
+
+/*
+App.Comment= Backbone.Model.extend({
+	urlRoot:"", //restful api
+	defaults: {
+        comment: "Add Your Comment Now!" 
+	},
+	initialize: function(spec) {
+		this.on("change:highlight", "toggleHighlight", this);
+		this.on("change:content", "updateContent", this);
+		this.on("error", function(model, error) {
+			console.log(error);
+		});
+	},
+	validate: function(attribs) {
+	}
+});
+*/
+
+var attrCollection = Backbone.Collection.extend({
+    model: App.Attr
+});
+
 var cardCollection = Backbone.Collection.extend({
 	model: App.Card
 });
 
+//Collection for Interacting with
+App.Attrs = new attrCollection();
 App.Column1 = new cardCollection();
 App.Column2 = new cardCollection();
 App.Column3 = new cardCollection();
 App.Cols = [App.Column1, App.Column2, App.Column3];
 
-//Individual view
+//Attr View
+App.AttrView = Backbone.View.extend({
+	tagName: 'div',
+	className: 'attr',
+	template: _.template(Template.attributeTemplate),
+	events: {
+	},
+	render: function(event) {
+		console.log("App.AttrView Render");
+		//this.$el.attr('id', this.model.get('cardId'));
+		this.$el.html(this.template(this.model.toJSON()));
+
+		/*
+		if (this.model.get('cardType') == "videoCard") {
+			this.$el.find('.card-header').hide();
+		}
+		*/
+		return this;
+	},
+	initialize: function(card) {
+		console.log("App.AttrView initialize");
+	}
+});
+
+/*
+//Comment View
+App.CommentView= Backbone.View.extend({
+	tagName: 'div',
+	className: 'comment',
+	template: _.template(Template.commentTemplate),
+	events: {
+	},
+	render: function(event) {
+		console.log("App.CommentView Render");
+		//this.$el.attr('id', this.model.get('cardId'));
+		this.$el.html(this.template(this.model.toJSON()));
+
+		if (this.model.get('cardType') == "videoCard") {
+			this.$el.find('.card-header').hide();
+		}
+		return this;
+	},
+	initialize: function(card) {
+		console.log("App.CommentView initialize");
+	}
+}); */
+
+//Card view
 App.CardView = Backbone.View.extend({
 	tagName: 'div',
 	className: 'card',
