@@ -13,9 +13,10 @@ App.Card = Backbone.Model.extend({
 	urlRoot:"", //restful api
 	defaults: {
 		cardTitle: " ",
+        imgUrl: "",
 		cardContent: " ",
 		cardId: guidGenerator(),
-    iconType: "edit",
+        iconType: "edit",
 		editable: false
 	},
 	initialize: function(spec) {
@@ -92,7 +93,6 @@ App.AttrView = Backbone.View.extend({
 		console.log("App.AttrView Render");
 		//this.$el.attr('id', this.model.get('cardId'));
 		this.$el.html(this.template(this.model.toJSON()));
-
 		/*
 		if (this.model.get('cardType') == "videoCard") {
 			this.$el.find('.card-header').hide();
@@ -138,11 +138,17 @@ App.CardView = Backbone.View.extend({
 	},
 	render: function(event) {
 		console.log("App.CardView Render");
-        
-		this.$el.html(this.template(this.model.toJSON()));
+        var img = "";
+
+        if (this.model.imgUrl) {
+            img = $('<img>', {'src':this.model.imgUrl});
+        }    
+
+		this.$el.html(img + this.template(this.model.toJSON()));
         this.$el.attr('cid', this.model.cid);
 
 		console.log(this.model.get('iconType') == 'edit');
+
         if (this.model.get('iconType') == 'edit') {
             this.$el.find('.btnedit').click(startEditBtn);
         }

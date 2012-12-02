@@ -60,7 +60,7 @@ function finAttrBtn(that) {
 
 function animateAttrRating() {
     $('.progress .bar').progressbar({
-        transition_delay: 300,
+        transition_delay: 1000,
         refresh_speed: 50,
         display_text: 2,
         use_percentage: true
