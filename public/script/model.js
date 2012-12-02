@@ -98,7 +98,6 @@ App.AttrView = Backbone.View.extend({
 			this.$el.find('.card-header').hide();
 		}
 		*/
-        animateAttrRating();
 		return this;
 	},
 	initialize: function(model) {
@@ -148,8 +147,6 @@ App.CardView = Backbone.View.extend({
 		this.$el.html(img + this.template(this.model.toJSON()));
         this.$el.attr('cid', this.model.cid);
 
-		console.log(this.model.get('iconType') == 'edit');
-
         if (this.model.get('iconType') == 'edit') {
             this.$el.find('.btnedit').click(startEditBtn);
         }
@@ -157,8 +154,9 @@ App.CardView = Backbone.View.extend({
             this.$el.addClass('attrStyle');
             this.$el.find('.btnplus').click(startAttrBtn);
             this.$el.find('.card-content').removeClass('inner');
-            animateAttrRating();
         }
+
+        animateAttrRating();
 
         return this;
 	},
