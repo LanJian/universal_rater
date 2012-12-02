@@ -76,6 +76,9 @@ $(function() {
         var url = "/entity/" + input;
         $.get(url, function(data) {
           console.log(data);
+          if (data.error)
+            return;
+
           var imgUrl = data.imgUrl;
           console.log(imgUrl);
           var descr = data.description;
@@ -83,12 +86,21 @@ $(function() {
             cardTitle: data.name,
             cardContent: '<img src="' + imgUrl + '" />' +
               '<p>' + descr + '</p>'
-          }
+          };
           var entityModel = new App.Card(entity);
-          //var entityView = new App.CardView(entityModel);
-          //entityView.render();
 
+          App.ClearCols();
           App.NextCol().add(entityModel);
+
+          var attr = {
+            attrTitle: 'Height',
+            attrValue: data.attrs['Height']
+          };
+          var attrModel = new App.Attr(attr);
+          var attrView = new App.AttrView(attrModel);
+          var cardContent = attrView.render().$el;
+
+          App.NextCol().add({'cardContent': cardContent});
         });
         return false;
     });
