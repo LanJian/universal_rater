@@ -71,6 +71,26 @@ module.exports = (function (app) {
   });
 
 
+  app.post('/entity/:entityName/edit', paramsToLowerCase, getEntity, function(req, res) {
+    var entity = req.entity;
+
+    if (req.query.name)
+      entity.name = req.query.name;
+    if (req.query.imgUrl)
+      entity.imgUrl = req.query.imgUrl;
+    if (req.query.description)
+      entity.description = req.query.description;
+    if (req.query.hashes)
+      entity.hashes = JSON.pars(req.query.hashes);
+
+    var key = 'entity:' + req.params.entityName;
+    db.set(key, JSON.stringify(entity), function(err, val) {
+      if (err) return res.send('failed: ' + err);
+      return res.send('success: ' + val);
+    });
+  });
+
+
   app.get('/entity/:entityName', paramsToLowerCase, getEntity, function(req, res) {
     if (req.entity)
       return res.send(200, req.entity);
@@ -81,7 +101,7 @@ module.exports = (function (app) {
   // ================================================================
   // Entity attributes
   // ================================================================
-  app.put('/entity/:entityName/attr/create', paramsToLowerCase, getEntity, function(req, res) {
+  app.post('/entity/:entityName/attr/create', paramsToLowerCase, getEntity, function(req, res) {
     var entity = req.entity;
     if (!entity)
       return res.send('failed: to get entity');

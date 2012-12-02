@@ -1,6 +1,7 @@
 //Global Vars
 var queryTypes = {"g":"/web","y":"/video"};
 var serverAddr = "localhost:3000";
+var currentEntity = '';
 
 function keyShortcut() {
     $(document).keydown(function(e){
@@ -27,17 +28,15 @@ function startEditBtn(that) {
 }
 
 function finEditBtn(that) {
-    var $parent = $(that.target).parents('.editUI');
+    var $parent = $(that.target).parents('#col2');
+    var $attrTitle = $parent.find('.attrTitle').html;
 
-    var imgSrc = $parent.find('input').val(); 
-    var $contContainer = $parent.find('.contentContainer');
-
-    var mCid = $parent.parents('.card').attr('cid');
-    var model = App.Column1.getByCid(mCid);
-
-    model.imgSrc = imgSrc;
-
-    $parent.remove();
+    var url = '/entity/' + currentEntity + '/attr/create?name=' + attrTitle;
+    $.post(url, function(data) {
+      console.log(data);
+      $('#searchForm').submit();
+    });
+    
 } 
 
 function startAttrBtn(that) {
@@ -53,9 +52,35 @@ function startAttrBtn(that) {
 
     var aView = new App.AttrView(aModel);
     $contContainer.prepend(aView.render().$el);
+
+    var $parent = $(that.target).parents('#col2');
+    console.log($parent);
+    var $button = $parent.find('.btnplus');
+    console.log($button);
+    $button.html('Done');
+
+    $button.click(finAttrBtn);
 }
 
 function finAttrBtn(that) {
+    var $parent = $(that.target).parents('#col2');
+
+    var imgSrc = $parent.find('input').val(); 
+    console.log(imgSrc);
+    var url = '/entity/' + currentEntity + '/edit?imgUrl=' + imgSrc;
+    $.post(url, function(data) {
+      console.log(data);
+      $('#searchForm').submit();
+    });
+    
+    var $contContainer = $parent.find('.contentContainer');
+
+    var mCid = $parent.parents('.card').attr('cid');
+    var model = App.Column1.getByCid(mCid);
+
+    model.imgSrc = imgSrc;
+
+    $parent.remove();
 }
 
 function animateAttrRating() {
@@ -80,7 +105,16 @@ $(function() {
     $('.icon-search').click(function() {
         $('#searchForm').submit();
     });
-    
+
+    $('.editUIBtn').click(function() {
+      console.log('cliiiick');
+      var input = $('input.url').val();
+      var url = '/entity/' + currentEntity + '/edit?imgUrl=' + input;
+      $.put(url, function(data) {
+        console.log(data);
+      });
+    });
+
     //settings
     $('#searchForm').submit(function() {
         var input = $('#searchbar').val();
@@ -91,6 +125,7 @@ $(function() {
           if (data.error)
             return;
 
+          currentEntity = input;
           var imgUrl = data.imgUrl;
           console.log(imgUrl);
           var descr = data.description;
@@ -104,17 +139,21 @@ $(function() {
           App.ClearCols();
           App.NextCol().add(entityModel);
 
-          var attr = {
-            attrTitle: 'Height',
-            //attrValue: data.attrs['Height']
-            attrValue: [0, 5]
-          };
-          var attrModel = new App.Attr(attr);
-          var attrView = new App.AttrView(attrModel);
-          var cardContent = attrView.render().$el.html();
+          var cardContent = '';
+          for (var key in data.attrs) {
+            console.log(key);
+            var attr = {
+              attrTitle: key,
+              //attrValue: data.attrs['Height']
+              attrValue: data.attrs[key]
+            };
+            var attrModel = new App.Attr(attr);
+            var attrView = new App.AttrView(attrModel);
+            cardContent += attrView.render().$el.html();
+          }
           console.log(['cardContent', cardContent]);
 
-          App.NextCol().add({'cardContent': cardContent});
+          App.NextCol().add({cardTitle: 'Attributes', iconType: 'plus', 'cardContent': cardContent});
         });
         return false;
     });
