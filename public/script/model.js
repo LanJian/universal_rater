@@ -15,7 +15,7 @@ App.Card = Backbone.Model.extend({
 		cardTitle: " ",
 		cardContent: "",
 		cardId: guidGenerator(),
-        iconType: "edit",
+    iconType: "edit",
 		editable: false
 	},
 	initialize: function(spec) {
@@ -101,7 +101,7 @@ App.AttrView = Backbone.View.extend({
 		return this;
 	},
 	initialize: function(model) {
-        this.model = model;
+    this.model = model;
 		console.log("App.AttrView initialize");
 	}
 });
@@ -149,8 +149,10 @@ App.CardView = Backbone.View.extend({
 		return this;
 	},
 	initialize: function(card) {
+    //this.model = card;
 		console.log("App.CardView initialize");
-		this.$el.addClass(card.model.get('cardType'));
+    console.log(card);
+		//this.$el.addClass(card.model.get('iconType'));
 		this.model.on('change', this.render, this);
 	}
 });

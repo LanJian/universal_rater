@@ -40,6 +40,8 @@ module.exports = (function (app) {
       hashes = JSON.parse(req.query['hashes']);
     var entity = {
       name: req.params.entityName,
+      imgUrl: req.query.imgUrl,
+      description: req.query.description,
       hashes: hashes,
       attrs: {}
     }
@@ -57,7 +59,7 @@ module.exports = (function (app) {
 
   app.get('/entity/:entityName', getEntity, function(req, res) {
     if (req.entity)
-      return res.send('success: ' + JSON.stringify(req.entity));
+      return res.send(req.entity);
     return res.send('failed: to get entity');
   });
 
