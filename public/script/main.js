@@ -30,8 +30,6 @@ function finEditBtn(that) {
     var $parent = $(that.target).parents('.editUI');
 
     var imgSrc = $parent.find('input').val(); 
-    var $contContainer = $parent.find('.contentContainer');
-
     var mCid = $parent.parents('.card').attr('cid');
     var model = App.Column1.getByCid(mCid);
 
@@ -59,18 +57,27 @@ function finAttrBtn(that) {
 }
 
 function animateAttrRating() {
-    setTimeout(function() {$('.progress .bar').progressbar({
-        transition_delay: 1000,
+    setTimeout(function() {
+        $('.progress .bar').progressbar({
+        transition_delay: 300,
         refresh_speed: 50,
         display_text: 2,
         use_percentage: true
-    })}, 1000);;
+        });
+
+        $('.attrDiv').click(getComment);
+
+    }, 1000);;
 }
 
 function addEntityBtn() {
     //add a new entity 
     var target = App.NextCol().add({'editable': true});
     $(target).click();
+}
+
+function getComment(that) {
+    console.log('hello world');            
 }
 
 $(function() {

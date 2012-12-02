@@ -154,9 +154,9 @@ App.CardView = Backbone.View.extend({
             this.$el.addClass('attrStyle');
             this.$el.find('.btnplus').click(startAttrBtn);
             this.$el.find('.card-content').removeClass('inner');
-        }
 
-        animateAttrRating();
+            animateAttrRating();
+        }
 
         return this;
 	},
