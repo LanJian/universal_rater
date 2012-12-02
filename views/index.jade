@@ -8,6 +8,7 @@ block content
         div(class="navbar-inner")
             div(class="container")
                 a(class="brand", href="#") uRater - Universal Rater 
+
     div(class="navbar outer", id="powerBar")
         div(class="navbar-inner", style="max-height:1em;")
             ul(class="nav-collapse in collapse nav powerBtn")
@@ -39,7 +40,19 @@ block content
     div(class="navbar outer", style="min-height:6.2em;")
         div(id='mainCanvas')
             div(class='break1 .hidden-phone')
-                div(id='col1', class='span4')
-                div(id='col2', class='span4')
-                div(id='col3', class='span4')
+            div(id='col1', class='span4')
+            div(id='col2', class='span4')
+            div(id='col3', class='span4')
+
+    p HELLO THERE
+
+    script(src="/script/template.js")
+    script(src="/script/model.js")
+    script(src="/script/main.js")
+
+    | <script>
+    |   tmp = new App.Col1View();
+    |   tmp = new App.Col2View();
+    |   tmp = new App.Col3View();
+    | </script>
 
