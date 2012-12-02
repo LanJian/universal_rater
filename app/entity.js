@@ -142,7 +142,7 @@ module.exports = (function (app) {
   });
 
 
-  app.put('/entity/:entityName/attr/:attrName/rating', paramsToLowerCase, getEntity, getAttr, function(req, res) {
+  app.post('/entity/:entityName/attr/:attrName/rating', paramsToLowerCase, getEntity, getAttr, function(req, res) {
     var entityName = req.params.entityName;
     var attrName = req.params.attrName;
     var rating = parseFloat(req.query.rating);

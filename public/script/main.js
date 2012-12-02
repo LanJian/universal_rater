@@ -89,16 +89,20 @@ function finAttrBtn(that) {
 
     //$button.off('click');
     $button.click(startAttrBtn);
-    
 }
 
 function animateAttrRating() {
-    setTimeout(function() {$('.progress .bar').progressbar({
-        transition_delay: 1000,
+    setTimeout(function() {
+        $('.progress .bar').progressbar({
+        transition_delay: 300,
         refresh_speed: 50,
         display_text: 2,
         use_percentage: true
-    })}, 1000);;
+        });
+
+        $('.attrDiv').click(getComment);
+
+    }, 1000);;
 }
 
 function addEntityBtn() {
@@ -112,6 +116,40 @@ function addRating(e) {
   var attrTitle = $(slider.parent().prev().find('.attrTitle')).html();
   console.log(attrTitle);
 
+  var val = slider.val() * 10;
+  console.log(val);
+
+  //$.post
+}
+
+function getComment(that) {
+    var entityName = $('#col1').find('.card').find('.card-title').html();
+    var attrName = $(that.target).find('.attrTitle').html();
+    console.log(entityName);
+    console.log(attrName);
+    var url = "/entity/"+entityName+"/attr/"+attrName+"/comments";
+
+    $.get(url, function(data) {
+        var col3 = $('#col3');
+        var cardContent = '';
+
+        for (var i = 0; i < data.length; i++) {
+            var commentM = new App.Comment({
+                "comment": data[i]['comment']
+            });
+            var commentV = new App.CommentView(commentM);
+            cardContent += commentV.render().$el.html();
+        }
+
+        if (!data.length) {
+            cardContent += new App.CommentView(new App.Comment()).render().$el.html();
+        }
+        
+        col3.add({'cardTitle':attrName+" Comments", 
+                  'cardContent': cardContent,
+                  'iconType': 'plus'
+        });
+    });
 }
 
 $(function() {
