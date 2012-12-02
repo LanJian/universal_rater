@@ -22,7 +22,7 @@ App.Card = Backbone.Model.extend({
 		this.on("change:highlight", "toggleHighlight", this);
 		this.on("change:content", "updateContent", this);
 		this.on("error", function(model, error) {
-			console.log(error);
+        console.log(error);
 		});
 	},
 	validate: function(attribs) {
@@ -138,8 +138,18 @@ App.CardView = Backbone.View.extend({
 	},
 	render: function(event) {
 		console.log("App.CardView Render");
-		//this.$el.attr('id', this.model.get('cardId'));
+		//this.model.get('iconType'));
+        //
 		this.$el.html(this.template(this.model.toJSON()));
+        this.$el.attr('cid', this.model.cid);
+
+		console.log(this.model.get('iconType') == 'edit');
+        if (this.model.get('iconType') == 'edit') {
+            this.$el.find('.btnedit').click(startEditBtn);
+        }
+        else {
+            this.$el.find('.btnadd').click(startAddBtn);
+        }
 
 		/*
 		if (this.model.get('cardType') == "videoCard") {
@@ -148,10 +158,9 @@ App.CardView = Backbone.View.extend({
 		*/
 		return this;
 	},
-	initialize: function(card) {
+	initialize: function(model) {
+        this.model = model;
 		console.log("App.CardView initialize");
-		this.$el.addClass(card.model.get('cardType'));
-		this.model.on('change', this.render, this);
 	}
 });
 
@@ -165,6 +174,7 @@ var BaseColView = Backbone.View.extend({
 	initialize: function() {
 		console.log(this.$el);
 		console.log(this.collection);
+
 		this.collection.on('add', this.addOne, this);
 	},
 	render: function() {

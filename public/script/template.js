@@ -6,7 +6,7 @@ var Template = (function() {
         	'<%=cardTitle%>' +
         '</legend>' +
         '<div class="pull-right" style="margin-top:-4em; padding-right: 0.5em;">' +
-            '<button class="btn"><i class="icon-<%=iconType%>"></i></button>' +
+            '<button class="btn btn<%=iconType%>"><i class="icon-<%=iconType%>"></i></button>' +
         '</div>' +
       '</div>' +
       '<div class="contentContainer outer">' +
@@ -25,7 +25,7 @@ var Template = (function() {
         	'<%=attrTitle%>' +
         '</h5>' +
         '<div class="progress active" style="max-width:90%;">' +
-            '<div class="bar bar-success" style="width: <%=attrValue[1]%> "> <%=attrValue[1]%> </div>' +  
+            '<div class="bar bar-success" style="width: <%=attrValue[1]%> %"><b><%=attrValue[1]h></b> </div>' +  
         '</div>' +
       '</div>';
 
@@ -36,9 +36,16 @@ var Template = (function() {
         '</p>' + 
       '</div>';
 
+  var static_editUI = 
+      '<div class="editUI">' +
+        '<input class="url" />' + 
+        '<button class="btn editUIBtn"> Set</button>' +
+      '</div>';
+
   return {
     cardTemplate: cardTemplate,
     attributeTemplate: attributeTemplate,
-    commentTemplate: commentTemplate
+    commentTemplate: commentTemplate,
+    static_editUI: static_editUI
   };
 })();
