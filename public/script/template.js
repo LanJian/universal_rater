@@ -25,7 +25,7 @@ var Template = (function() {
         	'<%=attrTitle%>' +
         '</h5>' +
         '<div class="progress active" style="max-width:<%=attrValue[1]%>"%>' +
-            '<div class="bar bar-success" style="width: 50%"><b><%=attrValue[1]%></b> </div>' +  
+            '<div class="bar bar-success" data-percentage="<%=attrValue[1]%>" ><b><%=attrValue[1]%></b> </div>' +  
         '</div>' +
       '</div>';
 
