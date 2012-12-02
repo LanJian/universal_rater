@@ -28,45 +28,9 @@ function startEditBtn(that) {
 }
 
 function finEditBtn(that) {
-    var $parent = $(that.target).parents('#col2');
-    var $attrTitle = $parent.find('.attrTitle').html;
+    var $parent = $(that.target).parents('.editUI');
+    var imgSrc = $parent.find('input').val();
 
-    var url = '/entity/' + currentEntity + '/attr/create?name=' + attrTitle;
-    $.post(url, function(data) {
-      console.log(data);
-      $('#searchForm').submit();
-    });
-    
-} 
-
-function startAttrBtn(that) {
-    //add new a new attr
-    var $parent = $(that.target).parents('.card');
-    var $contContainer = $parent.find('.contentContainer'); 
-
-    var aModel = new App.Attr({
-        'attrTitle': 'Enter New Attribute Name',
-        'attrValue': [0, 50],
-        'editable': true
-    });
-
-    var aView = new App.AttrView(aModel);
-    $contContainer.prepend(aView.render().$el);
-
-    var $parent = $(that.target).parents('#col2');
-    console.log($parent);
-    var $button = $parent.find('.btnplus');
-    console.log($button);
-    $button.html('Done');
-
-    $button.click(finAttrBtn);
-}
-
-function finAttrBtn(that) {
-    var $parent = $(that.target).parents('#col2');
-
-    var imgSrc = $parent.find('input').val(); 
-    console.log(imgSrc);
     var url = '/entity/' + currentEntity + '/edit?imgUrl=' + imgSrc;
     $.post(url, function(data) {
       console.log(data);
@@ -81,6 +45,51 @@ function finAttrBtn(that) {
     model.imgSrc = imgSrc;
 
     $parent.remove();
+} 
+
+function startAttrBtn(that) {
+    //add new a new attr
+    var $parent = $(that.target).parents('.card');
+    var $contContainer = $parent.find('.contentContainer'); 
+
+    var $button = $parent.find('.btnplus');
+    console.log($button);
+    if ($button.html() == 'Done')
+      return;
+
+    var aModel = new App.Attr({
+        'attrTitle': 'Enter New Attribute Name',
+        'attrValue': [0, 50],
+        'editable': true
+    });
+
+    var aView = new App.AttrView(aModel);
+    $contContainer.prepend(aView.render().$el);
+
+    $button.html('Done');
+
+    //$button.off('click');
+    $button.click(finAttrBtn);
+}
+
+function finAttrBtn(that) {
+    var $parent = $(that.target).parents('.card');
+    var $button = $parent.find('.btnplus');
+
+    console.log('--------------attrTitle: ');
+    console.log($($parent.find('.attrTitle')));
+    var attrTitle = $($parent.find('.attrTitle')[0]).html();
+    console.log(attrTitle);
+
+    var url = '/entity/' + currentEntity + '/attr/create?name=' + attrTitle;
+    $.post(url, function(data) {
+      console.log(data);
+      $('#searchForm').submit();
+    });
+
+    //$button.off('click');
+    $button.click(startAttrBtn);
+    
 }
 
 function animateAttrRating() {

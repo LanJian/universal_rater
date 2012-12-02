@@ -110,7 +110,7 @@ module.exports = (function (app) {
     if (entity.attrs[name])
       return res.send('failed: already exists');
 
-    entity.attrs[name] = [0, 5];
+    entity.attrs[name] = [0, 50];
 
     var key = 'entity:' + req.params.entityName;
     db.set(key, JSON.stringify(entity), function(err, val) {
