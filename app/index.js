@@ -11,23 +11,23 @@ app.use(express.static(process.cwd() + '/assets/script'));
 
 app.set('view engine', 'jade');
 
-var db = redis.createClient();
+app.db = redis.createClient();
 
 app.get('/', function(req, resp) {
-  /*
-  db.set('mykey', 'myvalue', function(err, val) {
+  app.db.set('mykey', 'myvalue', function(err, val) {
+    return resp.render('index');
   });
-  */
-
-  return resp.render('index');
 });
 
 app.get('/getval', function(req, resp) {
-  db.get('mykey', function(err, val) {
+  app.db.get('mykey', function(err, val) {
     console.log('getval: ' + val);
     return resp.send(val);
   });
 });
+
+require('./entity')
+require('app');
 
 port = process.env.PORT || process.env.VMC_APP_PORT || 3000;
 
