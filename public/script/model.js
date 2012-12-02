@@ -98,6 +98,7 @@ App.AttrView = Backbone.View.extend({
 			this.$el.find('.card-header').hide();
 		}
 		*/
+        animateAttrRating();
 		return this;
 	},
 	initialize: function(model) {
@@ -179,7 +180,6 @@ var BaseColView = Backbone.View.extend({
 	initialize: function() {
 		console.log(this.$el);
 		console.log(this.collection);
-
 		this.collection.on('add', this.addOne, this);
 	},
 	render: function() {
