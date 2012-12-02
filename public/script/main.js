@@ -100,7 +100,7 @@ function animateAttrRating() {
         use_percentage: true
         });
 
-        $('.attrDiv').click(getComment);
+        $('.attrDiv').on('click', getComment);
 
     }, 1000);;
 }
@@ -123,11 +123,13 @@ function addRating(e) {
 }
 
 function getComment(that) {
-    var entityName = $('#col1').find('.card').find('.card-title').html();
-    var attrName = $(that.target).find('.attrTitle').html();
-    console.log(entityName);
-    console.log(attrName);
-    var url = "/entity/"+entityName+"/attr/"+attrName+"/comments";
+    var attrName = $(that.target).parents('.attrDiv').find('.attrTitle').html();
+
+    if (!attrName) {
+        return;
+    }
+
+    var url = "/entity/"+currentEntity+"/attr/"+attrName+"/comments";
 
     $.get(url, function(data) {
         var col3 = $('#col3');
