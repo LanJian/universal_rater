@@ -34,7 +34,7 @@ App.Attr = Backbone.Model.extend({
 	defaults: {
 		attrId: guidGenerator(),
 		attrTitle: "",
-        attrList: [0, 0],
+        attrValue: [0, 0],
 		editable: false
 	},
 	initialize: function(spec) {
@@ -100,7 +100,8 @@ App.AttrView = Backbone.View.extend({
 		*/
 		return this;
 	},
-	initialize: function(card) {
+	initialize: function(model) {
+        this.model = model;
 		console.log("App.AttrView initialize");
 	}
 });

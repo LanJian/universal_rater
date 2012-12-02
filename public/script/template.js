@@ -25,9 +25,7 @@ var Template = (function() {
         	'<%=attrTitle%>' +
         '</h5>' +
         '<div class="progress active" style="max-width:90%;">' +
-            '<% _.each(attrList, function(attr) { %>' +
-                '<div class="bar bar-success" style="width: <%=attr[1]%> "> <%=attr[1]%> </div>' +  
-            '<% }); %>' + 
+            '<div class="bar bar-success" style="width: <%=attrValue[1]%> "> <%=attrValue[1]%> </div>' +  
         '</div>' +
       '</div>';
 
