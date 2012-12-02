@@ -6,14 +6,15 @@ var redis = require('redis');
 var app = express();
 app.use(assets());
 app.use(express.static(process.cwd() + '/public'));
+app.use(express.static(process.cwd() + '/assets/img'));
 app.set('view engine', 'jade');
 
 app.db = redis.createClient();
 
 app.get('/', function(req, resp) {
   app.db.set('mykey', 'myvalue', function(err, val) {
+    return resp.render('index');
   });
-  return resp.render('index');
 });
 
 app.get('/getval', function(req, resp) {
