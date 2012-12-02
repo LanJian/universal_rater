@@ -9,9 +9,12 @@ app.use(assets());
 app.use(express.static(process.cwd() + '/public'));
 app.use(express.static(process.cwd() + '/assets/script'));
 
+app.use(express.bodyParser());
+
 app.set('view engine', 'jade');
 
 app.db = redis.createClient();
+
 
 app.get('/', function(req, resp) {
   app.db.set('mykey', 'myvalue', function(err, val) {
@@ -26,8 +29,8 @@ app.get('/getval', function(req, resp) {
   });
 });
 
-require('./entity')
-require('app');
+require('./entity')(app);
+//require('app');
 
 port = process.env.PORT || process.env.VMC_APP_PORT || 3000;
 
