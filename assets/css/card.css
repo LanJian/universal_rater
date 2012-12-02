@@ -60,6 +60,9 @@
     text-align: center;
   }
 
+  .attrStyle {
+    padding: 1em;
+  }
   .contentContainer {
     min-height: 10em;
     margin-bottom: 3em;
@@ -106,6 +109,7 @@
    -ms-transform: rotate(1deg);
    transform: rotate(1deg);
 }
+
 .cardStack:after {
    z-index: -2;
    position: absolute;

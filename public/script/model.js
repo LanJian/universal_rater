@@ -13,7 +13,7 @@ App.Card = Backbone.Model.extend({
 	urlRoot:"", //restful api
 	defaults: {
 		cardTitle: " ",
-		cardContent: "",
+		cardContent: " ",
 		cardId: guidGenerator(),
         iconType: "edit",
 		editable: false
@@ -139,7 +139,7 @@ App.CardView = Backbone.View.extend({
 	render: function(event) {
 		console.log("App.CardView Render");
 		//this.model.get('iconType'));
-        //
+        
 		this.$el.html(this.template(this.model.toJSON()));
         this.$el.attr('cid', this.model.cid);
 
@@ -148,7 +148,8 @@ App.CardView = Backbone.View.extend({
             this.$el.find('.btnedit').click(startEditBtn);
         }
         else {
-            this.$el.find('.btnadd').click(startAddBtn);
+            this.$el.addClass('attrStyle');
+            this.$el.find('.btnplus').click(startAttrBtn);
         }
 
 		/*

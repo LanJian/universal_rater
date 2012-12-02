@@ -49,7 +49,7 @@ function startAttrBtn(that) {
     });
 
     var aView = new App.AttrView(aModel);
-    $contContainer.prepend(aView.$el);
+    $contContainer.prepend(aView.render().$el);
 }
 
 function addEntityBtn() {
