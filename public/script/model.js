@@ -122,7 +122,8 @@ App.CommentView= Backbone.View.extend({
 		}
 		return this;
 	},
-	initialize: function(card) {
+	initialize: function(model) {
+    this.model = model; 
 		console.log("App.CommentView initialize");
 	}
 });

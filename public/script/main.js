@@ -150,10 +150,10 @@ function getComment(that) {
     var url = "/entity/"+currentEntity+"/attr/"+attrName+"/comments";
 
     $.get(url, function(data) {
-        var col3 = $('#col3');
+        var col3 = App.Column3; 
         var cardContent = '';
 
-        for (var i = 0; i < data.length; i++) {
+        for (var i = 0; data.length && i < data.length; i++) {
             var commentM = new App.Comment({
                 "comment": data[i]['comment']
             });
@@ -165,6 +165,8 @@ function getComment(that) {
             cardContent += new App.CommentView(new App.Comment()).render().$el.html();
         }
         
+        console.log('-------------------------');
+        console.log(cardContent);
         col3.add({'cardTitle':attrName+" Comments", 
                   'cardContent': cardContent,
                   'iconType': 'plus'

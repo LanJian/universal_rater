@@ -36,7 +36,7 @@ var Template = (function() {
       '</div>';
 
   var commentTemplate = 
-      '<div class="commentDiv">' +
+      '<div class="commentDiv well">' +
         '<p class="commentStyle">' + 
             '<%=comment%>' + 
         '</p>' + 
