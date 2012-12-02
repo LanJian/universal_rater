@@ -1,4 +1,7 @@
 //Global Vars
+var queryTypes = {"g":"/web","y":"/video"};
+var serverAddr = "localhost:3000";
+
 function keyShortcut() {
     $(document).keydown(function(e){
         if (e.keyCode == 191) { //back slash 
@@ -69,7 +72,24 @@ $(function() {
     //settings
     $('#searchForm').submit(function() {
         var input = $('#searchbar').val();
-        SearchEngine.sendQuery(input);
+        //SearchEngine.sendQuery(input);
+        var url = "/entity/" + input;
+        $.get(url, function(data) {
+          console.log(data);
+          var imgUrl = data.imgUrl;
+          console.log(imgUrl);
+          var descr = data.description;
+          var entity = {
+            cardTitle: data.name,
+            cardContent: '<img src="' + imgUrl + '" />' +
+              '<p>' + descr + '</p>'
+          }
+          var entityModel = new App.Card(entity);
+          //var entityView = new App.CardView(entityModel);
+          //entityView.render();
+
+          App.NextCol().add(entityModel);
+        });
         return false;
     });
 
