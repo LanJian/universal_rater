@@ -1,6 +1,7 @@
 //Global Vars
 var queryTypes = {"g":"/web","y":"/video"};
 var serverAddr = "localhost:3000";
+var currentEntity = '';
 
 function keyShortcut() {
     $(document).keydown(function(e){
@@ -28,8 +29,16 @@ function startEditBtn(that) {
 
 function finEditBtn(that) {
     var $parent = $(that.target).parents('.editUI');
+    var imgSrc = $parent.find('input').val();
 
-    var imgSrc = $parent.find('input').val(); 
+    var url = '/entity/' + currentEntity + '/edit?imgUrl=' + imgSrc;
+    $.post(url, function(data) {
+      console.log(data);
+      $('#searchForm').submit();
+    });
+    
+    var $contContainer = $parent.find('.contentContainer');
+
     var mCid = $parent.parents('.card').attr('cid');
     var model = App.Column1.getByCid(mCid);
 
@@ -43,6 +52,11 @@ function startAttrBtn(that) {
     var $parent = $(that.target).parents('.card');
     var $contContainer = $parent.find('.contentContainer'); 
 
+    var $button = $parent.find('.btnplus');
+    console.log($button);
+    if ($button.html() == 'Done')
+      return;
+
     var aModel = new App.Attr({
         'attrTitle': 'Enter New Attribute Name',
         'attrValue': [0, 50],
@@ -51,9 +65,31 @@ function startAttrBtn(that) {
 
     var aView = new App.AttrView(aModel);
     $contContainer.prepend(aView.render().$el);
+
+    $button.html('Done');
+
+    //$button.off('click');
+    $button.click(finAttrBtn);
 }
 
 function finAttrBtn(that) {
+    var $parent = $(that.target).parents('.card');
+    var $button = $parent.find('.btnplus');
+
+    console.log('--------------attrTitle: ');
+    console.log($($parent.find('.attrTitle')));
+    var attrTitle = $($parent.find('.attrTitle')[0]).html();
+    console.log(attrTitle);
+
+    var url = '/entity/' + currentEntity + '/attr/create?name=' + attrTitle;
+    $.post(url, function(data) {
+      console.log(data);
+      $('#searchForm').submit();
+    });
+
+    //$button.off('click');
+    $button.click(startAttrBtn);
+    
 }
 
 function animateAttrRating() {
@@ -87,7 +123,16 @@ $(function() {
     $('.icon-search').click(function() {
         $('#searchForm').submit();
     });
-    
+
+    $('.editUIBtn').click(function() {
+      console.log('cliiiick');
+      var input = $('input.url').val();
+      var url = '/entity/' + currentEntity + '/edit?imgUrl=' + input;
+      $.put(url, function(data) {
+        console.log(data);
+      });
+    });
+
     //settings
     $('#searchForm').submit(function() {
         var input = $('#searchbar').val();
@@ -95,6 +140,10 @@ $(function() {
         var url = "/entity/" + input;
         $.get(url, function(data) {
           console.log(data);
+          if (data.error)
+            return;
+
+          currentEntity = input;
           var imgUrl = data.imgUrl;
           console.log(imgUrl);
           var descr = data.description;
@@ -102,12 +151,27 @@ $(function() {
             cardTitle: data.name,
             cardContent: '<img src="' + imgUrl + '" />' +
               '<p>' + descr + '</p>'
-          }
+          };
           var entityModel = new App.Card(entity);
-          //var entityView = new App.CardView(entityModel);
-          //entityView.render();
 
+          App.ClearCols();
           App.NextCol().add(entityModel);
+
+          var cardContent = '';
+          for (var key in data.attrs) {
+            console.log(key);
+            var attr = {
+              attrTitle: key,
+              //attrValue: data.attrs['Height']
+              attrValue: data.attrs[key]
+            };
+            var attrModel = new App.Attr(attr);
+            var attrView = new App.AttrView(attrModel);
+            cardContent += attrView.render().$el.html();
+          }
+          console.log(['cardContent', cardContent]);
+
+          App.NextCol().add({cardTitle: 'Attributes', iconType: 'plus', 'cardContent': cardContent});
         });
         return false;
     });

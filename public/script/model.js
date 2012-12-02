@@ -35,7 +35,7 @@ App.Attr = Backbone.Model.extend({
 	defaults: {
 		attrId: guidGenerator(),
 		attrTitle: "",
-        attrValue: [0, 0],
+    attrValue: [0, 0],
 		editable: false
 	},
 	initialize: function(spec) {
@@ -214,4 +214,11 @@ App.NextCol = function() {
 	var nextCol = App.Cols[App.CurrentColIndex];
 	App.CurrentColIndex = (App.CurrentColIndex+1)%App.Cols.length;
 	return nextCol;
+}
+
+App.ClearCols = function() {
+  $('#col1').empty();
+  $('#col2').empty();
+  $('#col3').empty();
+  App.CurrentColIndex = 0; //index to current col
 }

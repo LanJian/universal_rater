@@ -8,7 +8,7 @@ module.exports = (function (app) {
   var getEntity = function(req, res, next) {
     var key = 'entity:' + req.params.entityName;
     db.get(key, function(err, val) {
-      if (err) return res.send('failed: ' + err);
+      if (err) return res.send(500, {error: err});
 
       var entity = JSON.parse(val);
       req.entity = entity;
@@ -23,23 +23,37 @@ module.exports = (function (app) {
     var attr = entity.attrs[attrName];
     console.log(attr);
     if (!attr)
-      return res.send('failure: attr not found');
+      return res.send(404, {error: 'attr not found'});
 
     req.attr = attr;
     next();
   }
 
 
+  var paramsToLowerCase = function(req, res, next) {
+    if (req.params.entityName)
+      req.params.entityName = req.params.entityName.toLowerCase();
+    console.log(req.params.entityName);
+    //if (req.params.attrName)
+      //req.params.attrName = req.params.attrName.toLowerCase();
+    next();
+  }
+
+
+  //app.use(paramsToLowerCase);
+
+
   // ================================================================
   // Entities
   // ================================================================
-  app.put('/entity/:entityName', function(req, res) {
+  app.put('/entity/:entityName', paramsToLowerCase, function(req, res) {
     var key = 'entity:' + req.params.entityName;
+    console.log(key);
     var hashes = [];
     if (req.query['hashes'])
       hashes = JSON.parse(req.query['hashes']);
     var entity = {
-      name: req.params.entityName,
+      name: req.query.name,
       imgUrl: req.query.imgUrl,
       description: req.query.description,
       hashes: hashes,
@@ -57,26 +71,17 @@ module.exports = (function (app) {
   });
 
 
-  app.get('/entity/:entityName', getEntity, function(req, res) {
-    if (req.entity)
-      return res.send(req.entity);
-    return res.send('failed: to get entity');
-  });
-
-
-  // ================================================================
-  // Entity attributes
-  // ================================================================
-  app.put('/entity/:entityName/attr/create', getEntity, function(req, res) {
+  app.post('/entity/:entityName/edit', paramsToLowerCase, getEntity, function(req, res) {
     var entity = req.entity;
-    if (!entity)
-      return res.send('failed: to get entity');
-    
-    var name = req.query.name;
-    if (entity.attrs[name])
-      return res.send('failed: already exists');
 
-    entity.attrs[name] = [0, 5];
+    if (req.query.name)
+      entity.name = req.query.name;
+    if (req.query.imgUrl)
+      entity.imgUrl = req.query.imgUrl;
+    if (req.query.description)
+      entity.description = req.query.description;
+    if (req.query.hashes)
+      entity.hashes = JSON.pars(req.query.hashes);
 
     var key = 'entity:' + req.params.entityName;
     db.set(key, JSON.stringify(entity), function(err, val) {
@@ -86,7 +91,36 @@ module.exports = (function (app) {
   });
 
 
-  app.put('/entity/:entityName/attr/:attrName/edit', getEntity, function(req, res) {
+  app.get('/entity/:entityName', paramsToLowerCase, getEntity, function(req, res) {
+    if (req.entity)
+      return res.send(200, req.entity);
+    return res.send(404, {error: 'entity not found'});
+  });
+
+
+  // ================================================================
+  // Entity attributes
+  // ================================================================
+  app.post('/entity/:entityName/attr/create', paramsToLowerCase, getEntity, function(req, res) {
+    var entity = req.entity;
+    if (!entity)
+      return res.send('failed: to get entity');
+    
+    var name = req.query.name;
+    if (entity.attrs[name])
+      return res.send('failed: already exists');
+
+    entity.attrs[name] = [0, 50];
+
+    var key = 'entity:' + req.params.entityName;
+    db.set(key, JSON.stringify(entity), function(err, val) {
+      if (err) return res.send('failed: ' + err);
+      return res.send('success: ' + val);
+    });
+  });
+
+
+  app.put('/entity/:entityName/attr/:attrName/edit', paramsToLowerCase, getEntity, function(req, res) {
     var entity = req.entity;
     var votes = parseInt(req.query.votes);
     var rating = parseInt(req.query.rating);
@@ -108,7 +142,7 @@ module.exports = (function (app) {
   });
 
 
-  app.put('/entity/:entityName/attr/:attrName/rating', getEntity, getAttr, function(req, res) {
+  app.put('/entity/:entityName/attr/:attrName/rating', paramsToLowerCase, getEntity, getAttr, function(req, res) {
     var entityName = req.params.entityName;
     var attrName = req.params.attrName;
     var rating = parseFloat(req.query.rating);
@@ -137,7 +171,7 @@ module.exports = (function (app) {
   // ================================================================
   // Comments
   // ================================================================
-  app.post('/entity/:entityName/attr/:attrName/comment', getEntity, getAttr, function(req, res) {
+  app.post('/entity/:entityName/attr/:attrName/comment', paramsToLowerCase, getEntity, getAttr, function(req, res) {
     var entityName = req.params.entityName;
     var attrName = req.params.attrName;
 
@@ -160,7 +194,7 @@ module.exports = (function (app) {
   });
 
 
-  app.get('/entity/:entityName/attr/:attrName/comments', getEntity, getAttr, function(req, res) {
+  app.get('/entity/:entityName/attr/:attrName/comments', paramsToLowerCase, getEntity, getAttr, function(req, res) {
     var entityName = req.params.entityName;
     var attrName = req.params.attrName;
 
