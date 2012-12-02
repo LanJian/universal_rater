@@ -20,7 +20,7 @@ var Template = (function() {
       '</div>';
 
   var attributeTemplate = 
-      '<div id="<%=attrId%>" class="attrDiv">' +
+      '<div id="<%=attrId%>" class="attrDiv well">' +
         '<div class="pull-left">' +
             '<h5 class="attrTitle" contenteditable="<%=editable%>">' + 
                 '<%=attrTitle%>' +
