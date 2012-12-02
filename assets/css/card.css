@@ -69,6 +69,11 @@
     text-align: left;
   }
 
+  .ratingBox {
+    max-width: 1.2em;
+    float: right;
+  }
+
   .contentContainer {
     min-height: 10em;
     margin-bottom: 3em;

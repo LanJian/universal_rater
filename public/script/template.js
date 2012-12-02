@@ -21,11 +21,17 @@ var Template = (function() {
 
   var attributeTemplate = 
       '<div id="<%=attrId%>" class="attrDiv">' +
-        '<h5 class="attrTitle" contenteditable="<%=editable%>">' + 
-        	'<%=attrTitle%>' +
-        '</h5>' +
+        '<div class="pull-left">' +
+            '<h5 class="attrTitle" contenteditable="<%=editable%>">' + 
+                '<%=attrTitle%>' +
+            '</h5>' +
+        '</div>' +
+        '<div class="">' +
+            '<input type="text" class="ratingBox">' +
+        '</div>' + 
+        '<br><br>' + 
         '<div class="progress active" style="max-width:<%=attrValue[1]%>"%>' +
-            '<div class="bar bar-success" data-percentage="<%=attrValue[1]%>" ><b><%=attrValue[1]%></b> </div>' +  
+            '<div class="bar bar-success" data-percentage="<%=attrValue[1]%>"></div>' +  
         '</div>' +
       '</div>';
 
