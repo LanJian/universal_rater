@@ -204,7 +204,12 @@ module.exports = (function (app) {
     var key = 'comment:' + entityName + ':' + attrName;
     db.zrangebyscore(key, -Infinity, Infinity, function(err, val) {
       if (err) return res.send('failed: ' + err);
-      return res.send('success: ' + val);
+      var ret = [];
+      for (var i=0; i<val.length; i++) {
+        ret.push(JSON.parse(val[i]));
+      }
+      console.log(ret);
+      return res.send(ret);
     });
   });
 

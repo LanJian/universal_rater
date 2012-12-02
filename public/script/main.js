@@ -107,6 +107,13 @@ function addEntityBtn() {
     $(target).click();
 }
 
+function addRating(e) {
+  var slider = $(e.target);
+  var attrTitle = $(slider.parent().prev().find('.attrTitle')).html();
+  console.log(attrTitle);
+
+}
+
 $(function() {
     $('#addEntityBtn').click(addEntityBtn);
     $('#downloadBtn').click(downloadBtn);
