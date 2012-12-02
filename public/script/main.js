@@ -23,6 +23,11 @@ function startEditBtn(that) {
     var $contContainer = $parent.find('.contentContainer'); 
     $contContainer.prepend(Template.static_editUI);
 
+    var $descr = $parent.find('.entity-descr');
+    console.log($descr);
+    $descr.prop({contenteditable: true});
+    console.log($descr.attr('contenteditable'));
+
     //tweeting bad 
     $('.editUIBtn').click(finEditBtn);
 }
@@ -30,8 +35,12 @@ function startEditBtn(that) {
 function finEditBtn(that) {
     var $parent = $(that.target).parents('.editUI');
     var imgSrc = $parent.find('input').val();
+    var $descr = $($parent.parents('.card').find('.entity-descr'));
 
-    var url = '/entity/' + currentEntity + '/edit?imgUrl=' + imgSrc;
+    var imgSrcQuery = '';
+    if (imgSrc)
+      imgSrcQuery += '&imgUrl=' + imgSrc;
+    var url = '/entity/' + currentEntity + '/edit?description=' + $descr.html() + imgSrcQuery;
     $.post(url, function(data) {
       console.log(data);
       $('#searchForm').submit();
@@ -43,6 +52,8 @@ function finEditBtn(that) {
     var model = App.Column1.getByCid(mCid);
 
     model.imgSrc = imgSrc;
+
+    $descr.prop({contenteditable: false});
 
     $parent.remove();
 } 
@@ -58,13 +69,16 @@ function startAttrBtn(that) {
       return;
 
     var aModel = new App.Attr({
-        'attrTitle': 'Enter New Attribute Name',
+        'attrTitle': 'New Attribute',
         'attrValue': [0, 50],
         'editable': true
     });
 
     var aView = new App.AttrView(aModel);
     $contContainer.prepend(aView.render().$el);
+    var well = $($parent.find('.well')[0])
+    well.css('background-color', '#e0ffc2');
+    $(well.find('.attrTitle')).focus();
 
     $button.html('Done');
 
@@ -119,7 +133,11 @@ function addRating(e) {
   var val = slider.val() * 10;
   console.log(val);
 
-  //$.post
+  var url = '/entity/' + currentEntity + '/attr/' + attrTitle + '/rating?rating=' + val;
+  $.post(url, function(data) {
+    console.log(data);
+    $('#searchForm').submit();
+  });
 }
 
 function getComment(that) {
@@ -185,8 +203,8 @@ $(function() {
           var descr = data.description;
           var entity = {
             cardTitle: data.name,
-            cardContent: '<img src="' + imgUrl + '" />' +
-              '<p>' + descr + '</p>'
+            cardContent: '<img src="' + imgUrl + '" /><br /><br />' +
+              '<p class="entity-descr">' + descr + '</p>'
           };
           var entityModel = new App.Card(entity);
 
