@@ -16,24 +16,53 @@ function keyShortcut() {
     });
 }
 
-function visitBtn() {
+function finEditBtn(that) {
+    var $parent = $(that.target).parents('.editUI');
 
+    var imgSrc = $parent.find('input').val(); 
+    var $contContainer = $parent.find('.contentContainer');
+
+    var mCid = $parent.parents('.card').attr('cid');
+    var model = App.Column1.getByCid(mCid);
+
+    model.imgSrc = imgSrc;
+} 
+
+function finAttrBtn(that) {
 }
 
-function shareBtn() {
+function startEditBtn(that) {
+    //enable contenteditable and allow user to add image
+    var $parent = $(that.target).parents('.card');
+    var $contContainer = $parent.find('.contentContainer'); 
+    $contContainer.prepend(Template.static_editUI);
 
+    //tweeting bad 
+    $('.editUIBtn').click(finEditBtn);
 }
 
-function addBtn() {
+function startAttrBtn(that) {
+    //add new a new attr
+    var $parent = $(that.target).parents('.card');
+    var $contContainer = $parent.find('.contentContainer'); 
+
+    var aModel = new App.Attr({
+        'attrTitle': 'Enter New Attribute Name',
+        'attrValue': [0, 50],
+    });
+
+    var aView = new App.AttrView(aModel);
+    $contContainer.prepend(aView.$el);
+}
+
+function addEntityBtn() {
+    //add a new entity 
     var target = App.NextCol().add({'editable': true});
-}
-
-function downloadBtn() {
-
+    $(target).click();
 }
 
 $(function() {
-    $('#addBtn').click(addBtn);
+    $('#addEntityBtn').click(addEntityBtn);
     $('#downloadBtn').click(downloadBtn);
     
     $('.icon-search').click(function() {
