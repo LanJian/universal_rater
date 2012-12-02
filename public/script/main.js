@@ -103,11 +103,13 @@ $(function() {
 
           var attr = {
             attrTitle: 'Height',
-            attrValue: data.attrs['Height']
+            //attrValue: data.attrs['Height']
+            attrValue: [0, 5]
           };
           var attrModel = new App.Attr(attr);
           var attrView = new App.AttrView(attrModel);
-          var cardContent = attrView.render().$el;
+          var cardContent = attrView.render().$el.html();
+          console.log(['cardContent', cardContent]);
 
           App.NextCol().add({'cardContent': cardContent});
         });
