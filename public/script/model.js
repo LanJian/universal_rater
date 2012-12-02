@@ -150,6 +150,7 @@ App.CardView = Backbone.View.extend({
         else {
             this.$el.addClass('attrStyle');
             this.$el.find('.btnplus').click(startAttrBtn);
+            this.$el.find('.card-content').removeClass('inner');
         }
 
 		/*
